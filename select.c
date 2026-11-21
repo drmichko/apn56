@@ -10,6 +10,7 @@
 #include "orbitools.h"
 #include "common.h"
 #include "distrib.h"
+#include "basistools.h"
 
 int main(int argc, char *argv[])
 {
@@ -31,16 +32,21 @@ int main(int argc, char *argv[])
     initboole(5);
     initagldim(5);
 
+    basis_t base = monomialBasis(2, 5, ffdimen);
+    if ( ! loadBasename("lifting", &base) ){
+	    puts("Orbist  ?");
+	    return 0;
+    }
 
 FILE *src = fopen( "../boole/data/class-2-5.txt" , "r" );
     if (!src) {
-	perror("");
+	perror("data ?");
 	exit(1);
     }
     size_t aglsize = aglCardinality(ffdimen);
     num = 0;
     boole f;
-
+    int  item = 1;
     double limite = trivial( 2, ffsize );
     limite /= 2 * ffsize  - 1 ;
 
@@ -48,7 +54,8 @@ FILE *src = fopen( "../boole/data/class-2-5.txt" , "r" );
 	if ( kappa( f ) <= limite  ){
 		num++;
 		if ( ! target || target == num ) {
-			printf("\n\nnumero=%d", num);
+			int cls = base.table[ booleVector( f, &base ) ];
+			printf("\n\nnumero=%d cls=%d item=%d size=%ld", num, cls, item, size);
 			printf("\nkappa=%.2f", kappa(f) );
 			panf(stdout, f);
 			paglGroup(stdout, g);
@@ -58,6 +65,8 @@ FILE *src = fopen( "../boole/data/class-2-5.txt" , "r" );
 			}
 	}
         free( f );
+	aglfreeGroup( g );
+	item++;
     }
     printf("\nclass = %d with kappa <= %.4f  (trivial=%d)\n", num, limite, trivial(2,ffsize)  );
     fclose(src);
