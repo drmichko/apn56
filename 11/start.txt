@@ -1,0 +1,11 @@
+
+
+numero=11 cls=48
+kappa=2.23
+anf=bd+abd+acd+abe+ce+abcde
+[10000 01000 00100 00110 01101]01000
+[10011 00111 01110 00100 01100]01101
+orbSize=5332992
+stabSize=60
+limite=4.96  2.48
+count=78239

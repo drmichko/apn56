@@ -1,0 +1,11 @@
+
+
+numero=5 cls=23
+kappa=2.00
+anf=bd+abd+acd+abe+ce
+[11000 01110 00111 00100 01000]11000
+[11111 00010 00011 00101 01010]11011
+orbSize=166656
+stabSize=1920
+limite=4.97  2.48
+count=7828

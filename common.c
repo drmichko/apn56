@@ -1,4 +1,5 @@
 #include "common.h"
+#include "basistools.h"
 
 int intcmp(const void *p1, const void *p2)
 {
@@ -27,3 +28,28 @@ int trivial( int b, int q )
 }
 
 
+double   clK[ 49 ];
+vector   rep[ 49 ];
+boole    fct[ 49] ={ NULL};
+int64_t  stabsize[ 49 ];
+int64_t  orbsize[ 49 ]={0};
+aglGroup grp[ 49]={NULL};
+
+
+void initclass( basis_t base )
+{
+    uint64_t size;
+    aglGroup g = NULL;
+    int num = 0;
+    int nbclass = 0;
+    for( vector v = 0; v < base.size; v++ ){
+	    int cls = base.table[v];
+	    if ( orbsize[ cls ] == 0 ) {
+		    rep[ cls ] = v;
+		    fct[ cls ] = vectortoboole( v, &base );
+		    clK[ cls ] = kappa(  fct[ cls ]  );
+		    nbclass++;
+	    }
+	    orbsize[ cls ]++;
+}
+}

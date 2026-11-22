@@ -1,0 +1,11 @@
+
+
+numero=7 cls=29
+kappa=2.00
+anf=ac+bd+abcd+bce+ade
+[10000 11001 00100 00111 00001]00000
+[00100 00111 10010 11111 00001]00110
+orbSize=2666496
+stabSize=120
+limite=4.97  2.48
+count=119394

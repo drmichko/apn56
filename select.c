@@ -11,6 +11,7 @@
 #include "common.h"
 #include "distrib.h"
 #include "basistools.h"
+#include "mapping.h"
 
 int main(int argc, char *argv[])
 {
@@ -38,8 +39,8 @@ int main(int argc, char *argv[])
 	    return 0;
     }
 
-FILE *src = fopen( "../boole/data/class-2-5.txt" , "r" );
-    if (!src) {
+   FILE *src = fopen( "starter.txt" , "r" );
+   if (!src) {
 	perror("data ?");
 	exit(1);
     }
@@ -51,24 +52,59 @@ FILE *src = fopen( "../boole/data/class-2-5.txt" , "r" );
     limite /= 2 * ffsize  - 1 ;
 
     while ((f = loadaglboolesize(src, &g, &size))) {
-	if ( kappa( f ) <= limite  ){
-		num++;
-		if ( ! target || target == num ) {
+	    assert( kappa( f ) <= limite  );
+	    num++;
+	   if ( target == num ) {
 			int cls = base.table[ booleVector( f, &base ) ];
-			printf("\n\nnumero=%d cls=%d item=%d size=%ld", num, cls, item, size);
+			printf("\n\nnumero=%d cls=%d", num, cls );
 			printf("\nkappa=%.2f", kappa(f) );
 			panf(stdout, f);
 			paglGroup(stdout, g);
-			printf("\nstabSize=%ld", size);
 			printf("\norbSize=%ld", aglsize / size);
-			//doit( f );
+			printf("\nstabSize=%ld", size);
+			break;
 			}
-	}
-        free( f );
-	aglfreeGroup( g );
-	item++;
+            free( f );
+	    aglfreeGroup( g );
+	    item++;
     }
-    printf("\nclass = %d with kappa <= %.4f  (trivial=%d)\n", num, limite, trivial(2,ffsize)  );
     fclose(src);
+    assert( target == num );
+    limite =  ( trivial( 2, ffsize ) - kappa( f )  )  / ( ffsize - 1 );
+    printf("\nlimite=%.2f  %.2f", limite, limite/2 );
+
+    int count=0;
+    initclass( base );
+   
+    vector r = booleVector( f, &base );
+
+    basis_t W = monomialBasis(2, 5, ffdimen);
+    aglVectorGroup  ldg = NULL;
+    ldg = aglVectorGroupAction( g   , & W );
+    initBrowse( & W );
+    mapping  F = getmap( );
+
+    char name[128];
+    sprintf(name, "%d/map-2.txt", target );
+    FILE* dst =  fopen( name, "w");
+    if (! dst) {
+	perror( name );
+	exit(1);
+    }
+
+    for( vector v = 0; v < base.size; v++ )
+	    if ( W.table[v] == 0  &&  ( v < (v^r) ) && (clK[ base.table[v] ] + clK[ base.table[v ^ r] ] ) <= limite ) {
+		    numbrowse(1, v, ldg );
+		    W.table[v] = 2;
+		    count++;
+		    boole h = vectortoboole( v, &base );
+		    for( int x = 0; x < ffsize; x++ )
+			    F[x] = ( f[x]<< 1 ) + h[x]; 
+		    pmap( dst, F );
+		    free( h );
+	    }
+    fclose( dst );
+    printf("\ncount=%d", count ); 
+    printf("\n");
     return 0;
 }

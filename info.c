@@ -12,14 +12,6 @@
 #include "distrib.h"
 #include "basistools.h"
 
-double   clK[ 49 ];
-vector   rep[ 49 ];
-boole    fct[ 49] ={ NULL};
-int64_t  stabsize[ 49 ];
-int64_t  orbsize[ 49 ]={0};
-aglGroup grp[ 49]={NULL};
-
-
 int nbgenerator( aglGroup g )
 {
         int r = 0;
