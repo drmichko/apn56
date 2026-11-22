@@ -14,7 +14,7 @@ endif
 CFLAGS = $(DIR) $(OPTION)  -I$(BOOLE)/src -L$(BOOLE)/src 
 OFLAGS = $(DIR) $(OPTION)  -I$(BOOLE)/src -L$(BOOLE)/src
 
-SRC = select.c
+SRC = info.c select.c
 EXE = $(SRC:.c=.exe)
 OBJ = common.o
 
